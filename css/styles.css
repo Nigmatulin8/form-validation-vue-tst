@@ -1,0 +1,52 @@
+.sample {
+    margin: 0 auto;
+    margin-top: 15px;
+    width: 470px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid lightgray;
+}
+
+form > div {
+    margin: 10px;
+}
+
+.btnTxt {
+    width: 100%;
+}
+
+.name {
+    font-weight: 600;
+}
+
+.usrStyle {
+    margin-left: 5px;
+}
+
+input[type="submit"] {
+    margin-left: 10px;
+}
+
+tr > td:first-child {
+    font-weight: 600;
+}
+
+.fa-minus-square {
+    color: darkred;
+}
+.fa-check-square {
+    color: green;
+}
+
+label{
+    font-size: 16px;
+}
+
+/*Second Part*/
+
+.scroll {
+    padding: 15px;
+    max-width: 500px;
+    max-height: 500px;
+    margin: 0 auto;
+    overflow-y: scroll;
+}

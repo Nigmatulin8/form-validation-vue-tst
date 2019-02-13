@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form validation - second try</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div class="sample">
+        <form @submit.prevent = "formSubmited = false" v-if="formSubmited">
+            <div class="progress">
+                <div class="progress-bar" :style="progressWidth"></div>
+            </div>
+            <div class="form-group" v-for="(info, index) in info">
+                <label>{{ info.name }}</label>
+                <span  class="fa" v-if="checked[index].activated"
+                        :class="checked[index].error ?  'fa-minus-square text-danger' :
+                                                        'fa-check-square'">
+                </span>
+                <input type="text" class="form-control" :value="info.value"
+                        @input="getData(index, $event.target.value)"
+                        :maxlength="info.maxLength"
+                />
+            </div>
+            <input type="submit" class="btn btn-success" value="Send Info"
+                    :disabled="done < info.length" />
+        </form>
+        <div v-else>
+            <table class="table table-bordered">
+                <tr v-for="(item, i) in info">
+                    <td>{{ info[i].name }}</td>
+                    <td>{{ info[i].value }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script >
+        new Vue({
+            el: '.sample',
+            data: {
+                info: [
+                    {
+                        name: 'Email',
+                        value: 'rua@mail.ru',
+                        pattern: /[0-9a-z_]+@[0-9a-z]+\.[a-z]{2,5}$/i
+                    },
+                    {
+                        name: 'First Name',
+                        value: '',
+                        pattern: /[a-z]+$/i
+                    },
+                    {
+                        name: 'Second Name',
+                        value: '',
+                        pattern: /[a-z]+$/i
+                    },
+                    {
+                        name: 'Phone',
+                        value: '',
+                        pattern: /[0-9]{6,16}$/,
+                        maxLength: 14
+                    },
+                    {
+                        name: 'Some Field',
+                        value: '',
+                        pattern: /.+/
+                    },
+                ],
+                checked: [],
+                formSubmited: true
+            },
+            created() {
+                for(let i=0; i < this.info.length; i++){
+                    this.checked.push({
+                        activated: false,
+                        error: true
+                    });
+                }
+            },
+            methods: {
+                getData(index, data) {
+                    let currentData = this.info[index];
+                    let checking = this.checked[index];
+
+                    currentData.value = data
+                    checking.error = !currentData.pattern.test(data);
+                    checking.activated = true;
+                }
+            },
+            computed: {
+                done() {
+                    let counter = 0;
+                    for(let i=0; i < this.info.length; i++) {
+                        if(!this.checked[i].error) {
+                            counter++;
+                        }
+                    }
+                    return counter;
+                },
+                progressWidth() {
+                    return {
+                        width: (this.done / this.info.length * 100) + '%'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
